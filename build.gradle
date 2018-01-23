@@ -8,10 +8,18 @@ group = 'stellar'
 jar {
     manifest {
         attributes 'Implementation-Title': 'stellar-sdk',
-                   'Implementation-Version': version
+                'Implementation-Version': version
     }
     archiveName 'stellar-sdk.jar'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it).matching {
+                exclude {
+                    it.path.contains('META-INF') || it.name.endsWith('localization.properties') || it.name.endsWith('publicsuffixes.gz') || it.name.endsWith('build.properties') || it.name.endsWith('asm-xml.dtd') || it.path.startsWith('javax')
+                }
+            }
+        }
+    }
 }
 
 publishing {
@@ -32,16 +40,18 @@ repositories {
 }
 
 dependencies {
-    compile 'commons-codec:commons-codec:1.5'
-    compile 'org.apache.httpcomponents:httpclient:4.5.3'
-    compile 'org.apache.httpcomponents:fluent-hc:4.5.3'
     compile 'com.moandjiezana.toml:toml4j:0.5.1'
-    compile 'org.mockito:mockito-core:2.0.31-beta'
+    testCompile 'org.mockito:mockito-core:2.0.31-beta'
     compile 'com.google.guava:guava:18.0'
     compile 'com.google.code.gson:gson:2.4'
     compile 'commons-io:commons-io:2.4'
-    compile 'org.glassfish.jersey.core:jersey-client:2.22.1'
-    compile 'org.glassfish.jersey.media:jersey-media-sse:2.22.1'
+    compile('org.glassfish.jersey.core:jersey-client:2.22.1') {
+        exclude(group: 'javax.inject', module: 'javax.inject')
+    }
+    compile('org.glassfish.jersey.media:jersey-media-sse:2.22.1') {
+        exclude(group: 'javax.inject', module: 'javax.inject')
+    }
     compile fileTree(dir: 'libs', include: '*.jar')
     testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
 }
