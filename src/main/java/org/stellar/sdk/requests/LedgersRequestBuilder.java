@@ -37,7 +37,7 @@ public class LedgersRequestBuilder extends RequestBuilder {
         TypeToken type = new TypeToken<LedgerResponse>() {
         };
         ResponseHandler<LedgerResponse> responseHandler = new ResponseHandler<LedgerResponse>(type);
-        return internalExecute(url, responseHandler);
+        return execute(url, responseHandler);
     }
 
     /**
@@ -60,11 +60,11 @@ public class LedgersRequestBuilder extends RequestBuilder {
      * @throws TooManyRequestsException when too many requests were sent to the Horizon server.
      * @throws IOException
      */
-    public static Page<LedgerResponse> execute(HttpUrl url) throws IOException, TooManyRequestsException {
+    public Page<LedgerResponse> execute() throws IOException, TooManyRequestsException {
         TypeToken type = new TypeToken<Page<LedgerResponse>>() {
         };
         ResponseHandler<Page<LedgerResponse>> responseHandler = new ResponseHandler<Page<LedgerResponse>>(type);
-        return execute(url, responseHandler);
+        return execute(buildUri(), responseHandler);
     }
 
     /**
@@ -93,17 +93,6 @@ public class LedgersRequestBuilder extends RequestBuilder {
             }
         };
         return eventSource;
-    }
-
-    /**
-     * Build and internalExecute request.
-     *
-     * @return {@link Page} of {@link LedgerResponse}
-     * @throws TooManyRequestsException when too many requests were sent to the Horizon server.
-     * @throws IOException
-     */
-    public Page<LedgerResponse> execute() throws IOException, TooManyRequestsException {
-        return this.execute(this.buildUri());
     }
 
     @Override

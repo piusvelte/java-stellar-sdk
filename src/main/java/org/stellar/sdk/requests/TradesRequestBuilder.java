@@ -9,7 +9,6 @@ import org.stellar.sdk.responses.TradeResponse;
 import java.io.IOException;
 import java.net.URI;
 
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 
 /**
@@ -40,14 +39,10 @@ public class TradesRequestBuilder extends RequestBuilder {
         return this;
     }
 
-    public static TradeResponse execute(HttpUrl url) throws IOException, TooManyRequestsException {
+    public TradeResponse execute() throws IOException, TooManyRequestsException {
         TypeToken type = new TypeToken<TradeResponse>() {
         };
         ResponseHandler<TradeResponse> responseHandler = new ResponseHandler<TradeResponse>(type);
-        return execute(url, responseHandler);
-    }
-
-    public TradeResponse execute() throws IOException, TooManyRequestsException {
-        return this.execute(this.buildUri());
+        return execute(buildUri(), responseHandler);
     }
 }

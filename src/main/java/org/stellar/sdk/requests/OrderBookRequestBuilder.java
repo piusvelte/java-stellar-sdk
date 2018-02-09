@@ -9,7 +9,6 @@ import org.stellar.sdk.responses.OrderBookResponse;
 import java.io.IOException;
 import java.net.URI;
 
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 
 /**
@@ -40,15 +39,11 @@ public class OrderBookRequestBuilder extends RequestBuilder {
         return this;
     }
 
-    public static OrderBookResponse execute(HttpUrl url) throws IOException, TooManyRequestsException {
+    public OrderBookResponse execute() throws IOException, TooManyRequestsException {
         TypeToken type = new TypeToken<OrderBookResponse>() {
         };
         ResponseHandler<OrderBookResponse> responseHandler = new ResponseHandler<OrderBookResponse>(type);
-        return execute(url, responseHandler);
-    }
-
-    public OrderBookResponse execute() throws IOException, TooManyRequestsException {
-        return this.execute(this.buildUri());
+        return execute(buildUri(), responseHandler);
     }
 
     @Override

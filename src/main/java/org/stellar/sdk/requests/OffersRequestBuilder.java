@@ -9,7 +9,6 @@ import org.stellar.sdk.responses.Page;
 import java.io.IOException;
 import java.net.URI;
 
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -42,22 +41,11 @@ public class OffersRequestBuilder extends RequestBuilder {
      * @throws TooManyRequestsException when too many requests were sent to the Horizon server.
      * @throws IOException
      */
-    public static Page<OfferResponse> execute(HttpUrl url) throws IOException, TooManyRequestsException {
+    public Page<OfferResponse> execute() throws IOException, TooManyRequestsException {
         TypeToken type = new TypeToken<Page<OfferResponse>>() {
         };
         ResponseHandler<Page<OfferResponse>> responseHandler = new ResponseHandler<Page<OfferResponse>>(type);
-        return execute(url, responseHandler);
-    }
-
-    /**
-     * Build and internalExecute request.
-     *
-     * @return {@link Page} of {@link OfferResponse}
-     * @throws TooManyRequestsException when too many requests were sent to the Horizon server.
-     * @throws IOException
-     */
-    public Page<OfferResponse> execute() throws IOException, TooManyRequestsException {
-        return this.execute(this.buildUri());
+        return execute(buildUri(), responseHandler);
     }
 
     @Override

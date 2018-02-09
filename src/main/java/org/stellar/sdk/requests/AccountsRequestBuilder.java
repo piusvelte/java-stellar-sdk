@@ -38,7 +38,7 @@ public class AccountsRequestBuilder extends RequestBuilder {
         TypeToken type = new TypeToken<AccountResponse>() {
         };
         ResponseHandler<AccountResponse> responseHandler = new ResponseHandler<AccountResponse>(type);
-        return internalExecute(url, responseHandler);
+        return execute(url, responseHandler);
     }
 
     /**
@@ -57,15 +57,15 @@ public class AccountsRequestBuilder extends RequestBuilder {
      * Requests specific <code>uri</code> and returns {@link Page} of {@link AccountResponse}.
      * This method is helpful for getting the next set of results.
      *
-     * @return {@link Page} of {@link AccountResponse}
+     * @return {@link Page} of {@link AccountResponse} <strong>Warning!</strong> {@link AccountResponse}s in {@link Page} will contain only <code>keypair</code>
      * @throws TooManyRequestsException when too many requests were sent to the Horizon server.
      * @throws IOException
      */
-    public static Page<AccountResponse> execute(HttpUrl url) throws IOException, TooManyRequestsException {
+    public Page<AccountResponse> execute() throws IOException, TooManyRequestsException {
         TypeToken type = new TypeToken<Page<AccountResponse>>() {
         };
         ResponseHandler<Page<AccountResponse>> responseHandler = new ResponseHandler<Page<AccountResponse>>(type);
-        return execute(url, responseHandler);
+        return execute(buildUri(), responseHandler);
     }
 
     /**
@@ -94,18 +94,6 @@ public class AccountsRequestBuilder extends RequestBuilder {
             }
         };
         return eventSource;
-    }
-
-    /**
-     * Build and internalExecute request. <strong>Warning!</strong> {@link AccountResponse}s in {@link Page} will contain only <code>keypair</code>
-     * field.
-     *
-     * @return {@link Page} of {@link AccountResponse}
-     * @throws TooManyRequestsException when too many requests were sent to the Horizon server.
-     * @throws IOException
-     */
-    public Page<AccountResponse> execute() throws IOException, TooManyRequestsException {
-        return this.execute(this.buildUri());
     }
 
     @Override

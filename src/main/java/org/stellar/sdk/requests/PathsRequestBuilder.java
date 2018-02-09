@@ -11,7 +11,6 @@ import org.stellar.sdk.responses.PathResponse;
 import java.io.IOException;
 import java.net.URI;
 
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 
 /**
@@ -51,18 +50,10 @@ public class PathsRequestBuilder extends RequestBuilder {
      * @throws TooManyRequestsException when too many requests were sent to the Horizon server.
      * @throws IOException
      */
-    public static Page<PathResponse> execute(HttpUrl url) throws IOException, TooManyRequestsException {
+    public Page<PathResponse> execute() throws IOException, TooManyRequestsException {
         TypeToken type = new TypeToken<Page<PathResponse>>() {
         };
         ResponseHandler<Page<PathResponse>> responseHandler = new ResponseHandler<Page<PathResponse>>(type);
-        return execute(url, responseHandler);
-    }
-
-    /**
-     * @throws TooManyRequestsException when too many requests were sent to the Horizon server.
-     * @throws IOException
-     */
-    public Page<PathResponse> execute() throws IOException, TooManyRequestsException {
-        return this.execute(this.buildUri());
+        return execute(buildUri(), responseHandler);
     }
 }

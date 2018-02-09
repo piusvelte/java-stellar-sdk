@@ -40,7 +40,7 @@ public class TransactionsRequestBuilder extends RequestBuilder {
         TypeToken type = new TypeToken<TransactionResponse>() {
         };
         ResponseHandler<TransactionResponse> responseHandler = new ResponseHandler<TransactionResponse>(type);
-        return internalExecute(url, responseHandler);
+        return execute(url, responseHandler);
     }
 
     /**
@@ -86,11 +86,11 @@ public class TransactionsRequestBuilder extends RequestBuilder {
      * @throws TooManyRequestsException when too many requests were sent to the Horizon server.
      * @throws IOException
      */
-    public static Page<TransactionResponse> execute(HttpUrl url) throws IOException, TooManyRequestsException {
+    public Page<TransactionResponse> execute() throws IOException, TooManyRequestsException {
         TypeToken type = new TypeToken<Page<TransactionResponse>>() {
         };
         ResponseHandler<Page<TransactionResponse>> responseHandler = new ResponseHandler<Page<TransactionResponse>>(type);
-        return execute(url, responseHandler);
+        return execute(buildUri(), responseHandler);
     }
 
     /**
@@ -119,17 +119,6 @@ public class TransactionsRequestBuilder extends RequestBuilder {
             }
         };
         return eventSource;
-    }
-
-    /**
-     * Build and internalExecute request.
-     *
-     * @return {@link Page} of {@link TransactionResponse}
-     * @throws TooManyRequestsException when too many requests were sent to the Horizon server.
-     * @throws IOException
-     */
-    public Page<TransactionResponse> execute() throws IOException, TooManyRequestsException {
-        return this.execute(this.buildUri());
     }
 
     @Override

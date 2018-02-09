@@ -16,14 +16,12 @@ public abstract class RequestBuilder {
     private ArrayList<String> segments;
     private boolean segmentsAdded;
 
-    private final OkHttpClient httpClient;
-    private static OkHttpClient sHttpClient;
+    private OkHttpClient sHttpClient;
 
     RequestBuilder(URI serverURI, String defaultSegment, OkHttpClient client) {
         uriBuilder = HttpUrl.get(serverURI).newBuilder();
-        httpClient = client;
 
-        if (sHttpClient == null) sHttpClient = client;
+        sHttpClient = client;
 
         segments = new ArrayList<String>();
         if (defaultSegment != null) {
@@ -95,12 +93,7 @@ public abstract class RequestBuilder {
         return buildUri().toString().replaceAll("%", "%%");
     }
 
-    public <T> T internalExecute(HttpUrl url, ResponseHandler<T> handler) throws IOException {
-        return execute(url, handler);
-    }
-
-    public static <T> T execute(HttpUrl url, ResponseHandler<T> handler) throws IOException {
-        if (sHttpClient == null) sHttpClient = new OkHttpClient();
+    public <T> T execute(HttpUrl url, ResponseHandler<T> handler) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
                 .get()

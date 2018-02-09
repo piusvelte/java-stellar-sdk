@@ -17,7 +17,6 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -73,11 +72,11 @@ public class PaymentsRequestBuilder extends RequestBuilder {
      * @throws TooManyRequestsException when too many requests were sent to the Horizon server.
      * @throws IOException
      */
-    public static Page<OperationResponse> execute(HttpUrl url) throws IOException, TooManyRequestsException {
+    public Page<OperationResponse> execute() throws IOException, TooManyRequestsException {
         TypeToken type = new TypeToken<Page<OperationResponse>>() {
         };
         ResponseHandler<Page<OperationResponse>> responseHandler = new ResponseHandler<Page<OperationResponse>>(type);
-        return execute(url, responseHandler);
+        return execute(buildUri(), responseHandler);
     }
 
     /**
@@ -106,17 +105,6 @@ public class PaymentsRequestBuilder extends RequestBuilder {
             }
         };
         return eventSource;
-    }
-
-    /**
-     * Build and internalExecute request.
-     *
-     * @return {@link Page} of {@link OperationResponse}
-     * @throws TooManyRequestsException when too many requests were sent to the Horizon server.
-     * @throws IOException
-     */
-    public Page<OperationResponse> execute() throws IOException, TooManyRequestsException {
-        return this.execute(this.buildUri());
     }
 
     @Override
