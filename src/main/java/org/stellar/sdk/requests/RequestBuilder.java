@@ -16,12 +16,12 @@ public abstract class RequestBuilder {
     private ArrayList<String> segments;
     private boolean segmentsAdded;
 
-    private OkHttpClient sHttpClient;
+    private final OkHttpClient httpClient;
 
     RequestBuilder(URI serverURI, String defaultSegment, OkHttpClient client) {
         uriBuilder = HttpUrl.get(serverURI).newBuilder();
 
-        sHttpClient = client;
+        httpClient = client;
 
         segments = new ArrayList<String>();
         if (defaultSegment != null) {
@@ -98,7 +98,7 @@ public abstract class RequestBuilder {
                 .url(url)
                 .get()
                 .build();
-        return handler.handleResponse(sHttpClient.newCall(request).execute());
+        return handler.handleResponse(httpClient.newCall(request).execute());
     }
 
     /**
